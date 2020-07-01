@@ -1,0 +1,102 @@
+create database hotel_database;
+use  hotel_database;
+
+create table room_details(
+    id_room_detail int auto_increment primary key ,
+    id_room int,
+name_room nvarchar(100),
+price double,
+description text,
+amount int,
+foreign key (id_room) references room(id_room)
+);
+
+create table room(
+    id_room int primary key auto_increment,
+    name_room nvarchar(100) references room_details(name_room)
+);
+
+create table account(
+    account_name varchar(100) primary key ,
+    password varchar(100) not null ,
+    user_name nvarchar(100) not null ,
+    gender bit,
+    phone_number int not null ,
+    email varchar(100) not null ,
+    is_admin bit
+);
+
+alter table room_details add url_image varchar(500);
+
+alter table room add foreign key (name_room) references room_details(name_room);
+
+create table book_room(
+    id_book_room int primary key auto_increment,
+    account_name varchar(100),
+    id_room int,
+    check_in_date date not null ,
+    check_out_date date not null ,
+    note nvarchar(200),
+    foreign key (account_name) references account(account_name),
+    foreign key (id_room) references room(id_room)
+);
+
+insert into room_details(id_room,name_room, price, description,amount) VALUE
+(1,'king',1000000,'view biển, bồn tắm trong phòng, tặng 1 vé massage, kiến trúc trung hoa',4),
+(5,'Queen',1500000,'tặng 1 phần soup yến buổi sáng, bồn tắm trong phòng, tặng 1 vé massage vip, kiến trúc đế chế La Mã',4),
+(9,'Jack',9999000,'tặng 1 phần soup yến buổi sáng, 1 suất bữa tối gồm:hàu mù tạt, sá sùng, lẩu ngọc dương, bồn tắm trong phòng, 4 ktv phục vụ, kiến trúc Paris',4);
+
+delete from room_details;
+
+alter table room_details drop column amount;
+
+alter table room_details add column amount int not null;
+
+alter table room add column check_room bit not null ;
+
+insert into room(name_room,check_room) value
+('king',1),
+('king',1),
+('king',1),
+('king',1),
+('Queen',1),
+('Queen',1),
+('Queen',1),
+('Queen',1),
+('Jack',1),
+('Jack',1),
+('Jack',1),
+('Jack',1);
+
+insert into account(account_name, password, user_name, phone_number, email, is_admin) value
+('admin','123456','trùm',942389487,'tuyen@codegym.vn',1);
+
+alter table account drop column is_admin;
+alter table account add column  is_admin bit default 0;
+
+use hotel_database;
+
+delete from account;
+
+alter table account drop column gender;
+select * from account;
+insert into account(account_name, password, user_name, phone_number, email, is_admin) value
+    ('phu','123456','Đình Phú',942389487,'tuyen@codegym.vn',0);
+insert into account(account_name, password, user_name, phone_number, email, is_admin) value('Long','123456','Hiệp',942389487,'hiep@codegym.vn',0);
+
+alter table room
+
+
+select * from room;
+delete from room where id_room in(2,3,4,6,7,8,10,11,12);
+
+alter table room drop column check_room;
+alter table room_details drop PRIMARY KEY ;
+alter table room_details add column id_room_detail int auto_increment;
+drop table room_details;
+
+select * from room_details;
+
+update room_details set name_room='king_1' where id_room_detail=1;
+update room_details set name_room='queen_1' where id_room_detail=2;
+update room_details set name_room='jack_1' where id_room_detail=3;
